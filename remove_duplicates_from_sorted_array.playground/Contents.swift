@@ -1,63 +1,29 @@
-public class ListNode
-{
-    public var val: Int
-    public var next: ListNode?
-    public init() { self.val = 0; self.next = nil; }
-    public init(_ val: Int) { self.val = val; self.next = nil; }
-    public init(_ val: Int, _ next: ListNode?) { self.val = val; self.next = next; }
-    
-    public func to_array() -> [Int]
-    {
-        var data = [Int]()
-        var temp: ListNode? = self
-        repeat
-        {
-            data.append(temp!.val)
-            temp = temp!.next
-        }while temp != nil
-        return data
-    }
-    
-    static func to_list(data: [Int]) -> ListNode?
-    {
-        var h: ListNode?
-        var p: ListNode?
-        for i in data
-        {
-            let n = ListNode()
-            n.val = i
-            if p == nil { h = n; p = n; }
-            else { p?.next = n; p = n }
-        }
-        return h
-    }
-}
-
 class Solution
 {
-    func deleteDuplicates(_ head: ListNode?) -> ListNode?
+    func removeDuplicates(_ nums: inout [Int]) -> [Int]
     {
-        var h = head, t = h, current: ListNode? = head == nil ? nil : head?.next
-        while let c = current
+        var hash = [Int: Bool]()
+        var i = 0
+        while i < nums.count
         {
-            if c.val != t?.val { t?.next = c; t = c; }
-            current = current?.next
+            let num = nums[i]
+            if let _ = hash[num]
+            {
+                nums.remove(at: i)
+            }else
+            {
+                hash[num] = true
+                i += 1
+            }
         }
-        t?.next = nil
-        return h
+        
+        return nums
     }
 }
 
-for (input, answer) in [([1, 1, 2], [1, 2]), ([1, 1, 2, 3, 3], [1, 2, 3])]
+for (input, _, answer) in [([1,1,2], 2, [1, 2]), ([0,0,1,1,1,2,2,3,3,4], 5, [0,1,2,3,4])]
 {
-    if let list1 = ListNode.to_list(data: input)
-    {
-        let data = list1.to_array()
-        if let r = Solution().deleteDuplicates(list1)
-        {
-            let d = r.to_array()
-            let correct = answer == d
-            print("data: \(data), answer: \(answer), mine: \(d) -> \(correct ? "pass" : "fail")")
-        }
-    }
+    var modified = input
+    let result = Solution().removeDuplicates(&modified)
+    print("input: \(input) checking...-> \(result == answer ? "pass" : "fail")")
 }
