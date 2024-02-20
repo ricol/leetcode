@@ -58,5 +58,6 @@ class Solution
 for (a, b, answer) in [("11", "1", "100"), ("1010", "1011", "10101")]
 {
     let r = Solution().addBinary(a, b)
-    print("checking...\(r == answer ? "pass" : "fail")")
+    print("input: \(a), \(b), expect: \(answer), actual: \(r) -> \(r == answer ? "pass" : "fail")")
 }
+
